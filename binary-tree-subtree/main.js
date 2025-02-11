@@ -1,9 +1,44 @@
 /**
  * @typedef TreeNode
- * @prop {number} value
+ * @prop {number} val
  * @prop {TreeNode} left
  * @prop {TreeNode} right
  */
+
+
+/**
+ * @param {number[]} input
+ * @returns {TreeNode | null}
+ */
+export function parseTree(input, index = 0) {
+    if (index >= input.length || input[index] === null) {
+        return null
+    }
+
+    return {
+        val: input[index],
+        left: parseTree(input, 2 * index + 1),
+        right: parseTree(input, 2 * index + 2)
+    }
+}
+
+/**
+ *
+ * @param {TreeNode | null} t
+ * @param {TreeNode | null} q
+ * @returns {boolean}
+ */
+export function sameTree(t, q) {
+    if (t === null && q === null) {
+        return true
+    }
+
+    if (t === null || q === null) {
+        return false
+    }
+
+    return t.val === q.val && sameTree(t.left, q.left) && sameTree(t.right, q.right)
+}
 
 /**
  * @param {TreeNode | null} root
@@ -11,46 +46,18 @@
  * @return {boolean}
  */
 export default function binaryTreeSubtree(root, subRoot) {
-    if (root[0] === subRoot[0])
+    if (subRoot === null) {
+        return true
+    }
+
+    if (root === null) {
         return false
-}
-
-export function walkTree(tree, index = 0) {
-    const root = tree[index]
-
-    const leftPos = 2 * index + 1
-    const left = tree[leftPos]
-
-    const rightPos = 2 * index + 2
-    const right = tree[rightPos]
-
-    console.log(root, left, right)
-
-    if (left !== undefined) {
-        walkTree(tree, leftPos)
     }
 
-    if (right !== undefined) {
-        walkTree(tree, rightPos)
-    }
-}
-
-export function contains(tree, index = 0, subtree, subtreeIndex = 0) {
-    const root = tree[index]
-
-    const leftPos = 2 * index + 1
-    const left = tree[leftPos]
-
-    const rightPos = 2 * index + 2
-    const right = tree[rightPos]
-
-    console.log(root, left, right)
-
-    if (left !== undefined) {
-        walkTree(tree, leftPos)
+    if (sameTree(root, subRoot)) {
+        return true
     }
 
-    if (right !== undefined) {
-        walkTree(tree, rightPos)
-    }
+    return binaryTreeSubtree(root.left, subRoot) ||
+        binaryTreeSubtree(root.right, subRoot)
 }

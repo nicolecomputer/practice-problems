@@ -30,12 +30,11 @@ export function parseLevelOrder(input, index = 0) {
  * @return {boolean}
  */
 export default function binaryTreeEqual(a, b) {
-    console.log(a, b)
     if (a === null && b === null) {
         return true
     } else if (a === null || b === null) {
         return false
-    } else if (a.value !== b.value) {
+    } else if (a.value != b.value) {
         return false
     }
 
